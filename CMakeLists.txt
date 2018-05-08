@@ -18,6 +18,8 @@ if(MAKE_CLIB OR MAKE_CLIB_STATIC)
 	else()
 		message(STATUS "Building shared library for C Lib")
 	endif()
+else()
+	set(CRYPTONIGHT_PYTHON_VERSION "" CACHE STRING "Python version to use for compiling cryptonite_hash library")
 endif()
 
 # Set a default build configuration if none is specified. 'Release' produces the fastest binaries
@@ -140,6 +142,11 @@ if (WIN32)
   endif()
   
   if(NOT MAKE_CLIB)
+		  # .PYD file extension on Windows
+	  set_target_properties(cryptonite_hash PROPERTIES SUFFIX ".pyd")
+	
+	 # Link against the Python shared library
+	  target_link_libraries(cryptonite_hash ${PYTHON_LIBRARY})
 	  # Strip unnecessary sections of the binary on MINGW
 	  if (MINGW)
 		if(LINK_TYPE EQUAL STATIC)
