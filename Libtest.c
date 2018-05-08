@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include "cryptonite_hash.h"
+// gcc -oLibTest Libtest.c 
+
+int main(){
+	char test[] = "This is a test";
+	unsigned char out[32];
+	cryptonight_hash(out, test, sizeof(test)-1, 0);
+	printf("String is: %s\n", test);
+	puts("Hash is: ");
+	for(int i=0; i<32;i++){
+		printf("%02x", out[i]);
+	}
+	puts("\n");
+	unsigned char correct[] = {0xa0,0x84,0xf0,0x1d,0x14,0x37,0xa0,0x9c,0x69,0x85,0x40,0x1b,0x60,0xd4,0x35,0x54,0xae,0x10,0x58,0x02,0xc5,0xf5,0xd8,0xa9,0xb3,0x25,0x36,0x49,0xc0,0xbe,0x66,0x05};
+	for(int i=0; i<32; i++){
+		if(out[i] != correct[i]){
+			puts("Fail");
+			return -1;
+		}
+	}
+	puts("Test passed");
+	return 0;
+}

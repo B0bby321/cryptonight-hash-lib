@@ -311,7 +311,20 @@ void cryptonight_hash_ctx_aes_ni(void* output, const void* input, int len, struc
 
 
 //bool aes_ni_supported = false;
-
+#ifndef CLIB
+void cryptonight_hash(void* output, const void* input,const int aes_ni_supported) {
+	struct cryptonight_ctx *ctx = (struct cryptonight_ctx*)malloc(sizeof(struct cryptonight_ctx));
+	
+	if (aes_ni_supported) {
+		cryptonight_hash_ctx_aes_ni(output, input, 76, ctx);
+	}
+	else
+	{
+		cryptonight_hash_ctx(output, input, 76, ctx);
+	}
+	free(ctx);
+}
+#else
 void cryptonight_hash(void* output, const void* input, unsigned int length,const int aes_ni_supported) {
 	struct cryptonight_ctx *ctx = (struct cryptonight_ctx*)malloc(sizeof(struct cryptonight_ctx));
 	
@@ -324,7 +337,7 @@ void cryptonight_hash(void* output, const void* input, unsigned int length,const
 	}
 	free(ctx);
 }
-
+#endif
 
 int scanhash_cryptonight(char* pdata, uint32_t target,
 										uint32_t max_nonce, uint64_t* hashes_done)
