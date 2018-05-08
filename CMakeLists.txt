@@ -105,6 +105,7 @@ if(MAKE_CLIB)
   # ... extra files go here ...
 )
 set_target_properties(cryptonite_hash PROPERTIES PREFIX "lib")
+configure_file(cryptonite_hash_Capi.h cryptonite_hash_Capi.h COPYONLY)
 else()
 # Create the binding library for python
 add_library(cryptonite_hash SHARED
